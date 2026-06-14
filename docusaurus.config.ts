@@ -43,7 +43,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          routeBasePath: 'docs', // 지식 베이스 본문
+          routeBasePath: '/', // 지식 베이스를 사이트 루트로 (첫 화면 = 문서)
           // editUrl 제거 (개인용이라 "이 페이지 편집" 링크 불필요)
         },
         blog: {
@@ -103,8 +103,8 @@ const config: Config = {
         {
           title: '지식 베이스',
           items: [
-            {label: '시작하기', to: '/docs/'},
-            {label: 'Hermes 에이전트 뜯어보기', to: '/docs/hermes-agent/01-hermes-overview'},
+            {label: '시작하기', to: '/'},
+            {label: 'Hermes 에이전트 뜯어보기', to: '/hermes-agent/01-hermes-overview'},
           ],
         },
         {
