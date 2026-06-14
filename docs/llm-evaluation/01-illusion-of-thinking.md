@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 title: "추론 모델의 사고 환상 (Apple)"
 ---
 

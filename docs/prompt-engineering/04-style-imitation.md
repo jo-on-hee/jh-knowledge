@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 4
 title: "LLM의 개인 글쓰기 스타일 모방 평가"
 ---
 
