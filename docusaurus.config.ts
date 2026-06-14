@@ -6,18 +6,16 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: '준희의 지식 베이스',
-  tagline: '공부하고, 겪고, 정리한 것들을 쌓아두는 곳',
+  tagline: '공부하고 정리한 것들을 쌓아두는 곳',
   favicon: 'img/favicon.svg',
 
   future: {
     v4: true,
   },
 
-  // 배포 주소 (GitHub Pages 사용 시 아래 두 값을 본인 것으로 바꾸면 됨)
+  // GitHub Pages 배포 주소
   url: 'https://jo-on-hee.github.io',
   baseUrl: '/jh-knowledge/',
-
-  // GitHub Pages 배포 설정 (나중에 본인 값으로)
   organizationName: 'jo-on-hee',
   projectName: 'jh-knowledge',
 
@@ -44,22 +42,8 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: '/', // 지식 베이스를 사이트 루트로 (첫 화면 = 문서)
-          // editUrl 제거 (개인용이라 "이 페이지 편집" 링크 불필요)
         },
-        blog: {
-          showReadingTime: true,
-          routeBasePath: 'log', // 시간순 기록(짧은 메모·회고)은 /log 로
-          blogTitle: '기록',
-          blogDescription: '그때그때의 메모와 회고',
-          postsPerPage: 10,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'ignore',
-        },
+        blog: false, // 블로그(기록) 기능 미사용 — 순수 지식 베이스
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -68,7 +52,6 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/docusaurus-social-card.jpg',
     colorMode: {
       respectPrefersColorScheme: true,
     },
@@ -89,7 +72,6 @@ const config: Config = {
           position: 'left',
           label: '지식 베이스',
         },
-        {to: '/log', label: '기록', position: 'left'},
         {
           href: 'https://github.com/jo-on-hee/jh-knowledge',
           label: 'GitHub',
@@ -103,14 +85,14 @@ const config: Config = {
         {
           title: '지식 베이스',
           items: [
-            {label: '시작하기', to: '/'},
+            {label: '전체 목차', to: '/'},
             {label: 'Hermes 에이전트 뜯어보기', to: '/hermes-agent/01-hermes-overview'},
           ],
         },
         {
-          title: '더 보기',
+          title: '링크',
           items: [
-            {label: '기록', to: '/log'},
+            {label: 'GitHub', href: 'https://github.com/jo-on-hee/jh-knowledge'},
           ],
         },
       ],

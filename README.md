@@ -1,41 +1,37 @@
-# Website
+# 준희의 지식 베이스
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+공부하고 정리한 것들을 주제별로 쌓아두는 개인 지식 베이스.
 
-## Installation
+사이트: https://jo-on-hee.github.io/jh-knowledge/
 
-```bash
-yarn
+## 주제
+
+- **Hermes 에이전트 뜯어보기** — 오픈소스 AI 에이전트 Hermes의 내부 구조를 코드 기준으로 분해한 14편 시리즈.
+
+## 구조
+
+```
+docs/                 지식 베이스 본문 (.md)
+  hermes-agent/       주제별 폴더 (_category_.json + .md)
+src/css/custom.css    디자인 커스텀
+docusaurus.config.ts  사이트 설정
 ```
 
-## Local Development
+## 로컬에서 보기
 
 ```bash
-yarn start
+npm install
+npm run build && npm run serve   # http://localhost:3000
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+## 새 주제 추가
 
-## Build
+`docs/` 아래에 폴더를 만들고 `_category_.json` + `.md` 파일을 넣으면 사이드바에 자동 반영된다.
 
-```bash
-yarn build
-```
+## 배포
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+`main` 브랜치에 push하면 GitHub Actions가 자동으로 빌드·배포한다.
 
-## Deployment
+---
 
-Using SSH:
-
-```bash
-USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+[Docusaurus](https://docusaurus.io/)로 제작.
