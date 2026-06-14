@@ -1,0 +1,10 @@
+{
+  "label": "Hermes 에이전트 뜯어보기",
+  "position": 1,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "description": "오픈소스 AI 에이전트 Hermes의 내부 구조를 코드 기준으로 하나씩 분해한 시리즈."
+  }
+}

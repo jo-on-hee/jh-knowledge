@@ -1,0 +1,205 @@
+/**
+ * 전역 CSS. Docusaurus 기본(Infima) 변수를 덮어써서
+ * nanonets 문서 사이트처럼 깔끔한 스타일을 입힌다.
+ * - 순수 흰 배경, 파란 포인트색, 넉넉한 여백, 부드러운 코드블록
+ */
+
+/* 한국어에 어울리는 시스템/Pretendard 폰트 (설치 없이 fallback) */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+
+:root {
+  /* 포인트색: 차분한 파랑 (nanonets 톤) */
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
+
+  /* 폰트 */
+  --ifm-font-family-base: 'Pretendard', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --ifm-font-family-monospace: 'SF Mono', 'JetBrains Mono', 'Fira Code',
+    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* 본문 가독성: 좁은 폭 + 넉넉한 줄간격 */
+  --ifm-line-height-base: 1.75;
+  --ifm-font-size-base: 16px;
+  --ifm-heading-font-weight: 700;
+  --ifm-h1-font-size: 2.2rem;
+  --ifm-h2-font-size: 1.5rem;
+  --ifm-h3-font-size: 1.2rem;
+  --ifm-spacing-vertical: 1.2rem;
+
+  /* 배경: 순수 흰색 */
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #ffffff;
+
+  /* 코드: 부드러운 연회색 + 둥근 모서리 */
+  --ifm-code-font-size: 90%;
+  --ifm-code-background: #f6f7f9;
+  --ifm-code-border-radius: 6px;
+  --ifm-pre-background: #f8fafc;
+  --docusaurus-highlighted-code-line-bg: rgba(37, 99, 235, 0.08);
+
+  /* 테두리/구분선: 아주 연하게 */
+  --ifm-toc-border-color: #eef0f3;
+  --ifm-color-emphasis-200: #eef0f3;
+  --ifm-color-emphasis-300: #e3e6ea;
+
+  /* 둥근 모서리 통일 */
+  --ifm-global-radius: 8px;
+}
+
+/* 다크 모드: 부드러운 슬레이트 톤 */
+[data-theme='dark'] {
+  --ifm-color-primary: #60a5fa;
+  --ifm-color-primary-dark: #3b82f6;
+  --ifm-color-primary-darker: #2563eb;
+  --ifm-color-primary-darkest: #1d4ed8;
+  --ifm-color-primary-light: #93c5fd;
+  --ifm-color-primary-lighter: #bfdbfe;
+  --ifm-color-primary-lightest: #dbeafe;
+
+  --ifm-background-color: #0f1115;
+  --ifm-background-surface-color: #161922;
+  --ifm-code-background: #1e2230;
+  --ifm-pre-background: #161922;
+  --ifm-toc-border-color: #242836;
+  --ifm-color-emphasis-200: #242836;
+  --ifm-color-emphasis-300: #2d3240;
+  --docusaurus-highlighted-code-line-bg: rgba(96, 165, 250, 0.12);
+}
+
+/* ── 본문: 좁은 폭으로 한 줄을 짧게 (가독성) ───────────────── */
+.markdown {
+  max-width: 760px;
+}
+article {
+  margin: 0 auto;
+}
+
+/* 제목 위 여백을 넉넉히 (빽빽하지 않게) */
+.markdown h2 {
+  margin-top: 2.6rem;
+  padding-top: 0.4rem;
+  letter-spacing: -0.01em;
+}
+.markdown h3 {
+  margin-top: 1.8rem;
+}
+.markdown h1 {
+  letter-spacing: -0.02em;
+  margin-bottom: 1.2rem;
+}
+
+/* ── 상단 navbar: 깔끔한 흰색 + 얇은 하단선 ───────────────── */
+.navbar {
+  box-shadow: none;
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+  backdrop-filter: saturate(180%) blur(8px);
+  background: rgba(255, 255, 255, 0.85);
+}
+[data-theme='dark'] .navbar {
+  background: rgba(15, 17, 21, 0.85);
+}
+.navbar__title {
+  font-weight: 700;
+}
+
+/* ── 사이드바: 얇고 담백하게 ──────────────────────────── */
+.menu {
+  padding: 1rem 0.6rem !important;
+  font-size: 0.9rem;
+}
+.menu__link {
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  color: var(--ifm-color-emphasis-700);
+}
+.menu__link:hover {
+  background: var(--ifm-code-background);
+}
+.menu__link--active {
+  background: rgba(37, 99, 235, 0.08);
+  font-weight: 600;
+}
+[data-theme='dark'] .menu__link--active {
+  background: rgba(96, 165, 250, 0.12);
+}
+.menu__list-item-collapsible {
+  border-radius: 6px;
+}
+/* 사이드바 우측 구분선 연하게 */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-toc-border-color) !important;
+}
+
+/* ── 코드블록: 부드러운 테두리 + 둥근 모서리 ──────────────── */
+.theme-code-block,
+pre[class*='language-'] {
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+code {
+  border: none;
+  padding: 0.15rem 0.4rem;
+}
+
+/* ── 인용박스(blockquote): 담백한 좌측 막대 ──────────────── */
+.markdown blockquote {
+  border-left: 3px solid var(--ifm-color-primary-lighter);
+  background: var(--ifm-code-background);
+  border-radius: 0 8px 8px 0;
+  padding: 0.8rem 1.1rem;
+  color: var(--ifm-color-emphasis-800);
+}
+
+/* ── 표: 깔끔한 라인 ──────────────────────────────────── */
+.markdown table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+.markdown table thead {
+  background: var(--ifm-code-background);
+}
+.markdown table th,
+.markdown table td {
+  border: 1px solid var(--ifm-toc-border-color);
+  padding: 0.55rem 0.9rem;
+}
+
+/* ── 우측 목차(TOC): 담백하게 ────────────────────────── */
+.table-of-contents {
+  font-size: 0.82rem;
+}
+.table-of-contents__link--active {
+  font-weight: 600;
+}
+
+/* ── 이전/다음 페이지 버튼: 부드러운 카드 ────────────────── */
+.pagination-nav__link {
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: 10px;
+  transition: border-color 0.15s ease;
+}
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary-lighter);
+}
+
+/* ── 머메이드 다이어그램: 가운데 정렬 + 여백 ──────────────── */
+.docusaurus-mermaid-container {
+  display: flex;
+  justify-content: center;
+  margin: 1.8rem 0;
+}
+
+/* ── 홈 히어로: 과한 색 대신 담백하게 ────────────────────── */
+.hero--primary {
+  --ifm-hero-background-color: var(--ifm-background-surface-color);
+  --ifm-hero-text-color: var(--ifm-font-color-base);
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+}
