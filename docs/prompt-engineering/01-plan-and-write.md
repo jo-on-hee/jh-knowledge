@@ -3,6 +3,8 @@ sidebar_position: 1
 title: "Plan-and-Write: 재훈련 없는 LLM 길이 제어"
 ---
 
+> **원문**: [Plan-and-Write: Structure-Guided Length Control for LLMs without Model Retraining (arXiv:2511.01807)](https://arxiv.org/abs/2511.01807)
+
 ---
 
 ## 초록

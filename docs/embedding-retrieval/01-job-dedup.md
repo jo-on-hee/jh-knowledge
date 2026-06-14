@@ -3,6 +3,8 @@ sidebar_position: 1
 title: "채용공고 중복 탐지 (유사도+임베딩)"
 ---
 
+> **원문**: [Combining Embeddings and Domain Knowledge for Job Posting Duplicate Detection (arXiv:2406.06257)](https://arxiv.org/abs/2406.06257)
+
 ### Abstract (초록)
 
 > 여러 온라인 채널에 게시되는 채용공고의 중복을 탐지하는 방법을 제안

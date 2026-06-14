@@ -3,6 +3,11 @@ sidebar_position: 3
 title: "RAG 청킹: Late Chunking & Contextual Retrieval"
 ---
 
+> **원문**
+>
+> - Late Chunking: [Contextual Chunk Embeddings Using Long-Context Embedding Models (arXiv:2409.04701)](https://arxiv.org/abs/2409.04701)
+> - Contextual Retrieval: [Introducing Contextual Retrieval — Anthropic](https://www.anthropic.com/news/contextual-retrieval)
+
 ---
 
 ### 초록 (Abstract)

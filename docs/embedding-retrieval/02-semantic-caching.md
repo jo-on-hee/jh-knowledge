@@ -3,6 +3,8 @@ sidebar_position: 2
 title: "시맨틱 캐싱으로 LLM API 비용 절감"
 ---
 
+> **원문**: [GPT Semantic Cache: Reducing LLM Costs and Latency via Semantic Embedding Caching (arXiv:2411.05276)](https://arxiv.org/abs/2411.05276)
+
 ## 초록
 
 - 고객 서비스 챗봇과 같은 애플리케이션 같은 경우 빈번한 API 호출로 높은 비용과 병목 현상이 나타남

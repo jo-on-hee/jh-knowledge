@@ -3,6 +3,11 @@ sidebar_position: 1
 title: "추론 모델의 사고 환상 (Apple)"
 ---
 
+> **원문**
+>
+> - [The Illusion of Thinking: Understanding the Strengths and Limitations of Reasoning Models via the Lens of Problem Complexity (arXiv:2506.06941)](https://arxiv.org/abs/2506.06941)
+> - [Apple Machine Learning Research](https://machinelearning.apple.com/research/illusion-of-thinking)
+
 ## 초록
 
 #### 핵심 문제 제기

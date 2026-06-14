@@ -3,6 +3,8 @@ sidebar_position: 3
 title: "Prompt Decorators: 선언적·조합형 프롬프트 문법"
 ---
 
+> **원문**: [Prompt Decorators: A Declarative and Composable Syntax for Reasoning, Formatting, and Control in LLMs (arXiv:2510.19850)](https://arxiv.org/abs/2510.19850)
+
 Prompt Decorators: A Declarative and Composable Syntax for...
 
 

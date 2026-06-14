@@ -3,6 +3,8 @@ sidebar_position: 4
 title: "LLM의 개인 글쓰기 스타일 모방 평가"
 ---
 
+> **원문**: [Catch Me If You Can? Not Yet: LLMs Still Struggle to Imitate the Implicit Writing Styles of Everyday Authors (arXiv:2509.14543)](https://arxiv.org/abs/2509.14543)
+
 ## LLM의 개인 글쓰기 스타일 모방 능력 평가 연구
 
 ### 연구 배경 및 동기

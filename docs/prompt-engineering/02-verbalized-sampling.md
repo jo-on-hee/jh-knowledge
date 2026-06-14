@@ -3,6 +3,8 @@ sidebar_position: 2
 title: "Verbalized Sampling: 응답 다양성 프롬프팅"
 ---
 
+> **원문**: [Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity (arXiv:2510.01171)](https://arxiv.org/abs/2510.01171)
+
 ### 요약
 
 Verbalized Sampling (VS)'은 LLM이 생성하는 응답의 다양성(semantic diversity)을 크게 높이는 새로운 프롬프트 엔지니어링 기법
