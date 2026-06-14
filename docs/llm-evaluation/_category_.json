@@ -1,0 +1,9 @@
+{
+  "label": "LLM 능력·평가",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "title": "LLM 능력·평가",
+    "description": "LLM이 특정 능력을 실제로 갖췄는지 벤치마크로 측정·분석한 연구."
+  }
+}

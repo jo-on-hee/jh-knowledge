@@ -1,0 +1,9 @@
+{
+  "label": "프롬프트 엔지니어링",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "title": "프롬프트 엔지니어링",
+    "description": "프롬프트만으로 LLM의 출력 길이·다양성·동작을 제어하는 기법들."
+  }
+}

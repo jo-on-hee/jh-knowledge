@@ -1,6 +1,8 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 // 이 파일은 Node.js에서 실행됩니다 (브라우저 API 사용 불가).
 
@@ -35,6 +37,17 @@ const config: Config = {
   },
   themes: ['@docusaurus/theme-mermaid'],
 
+  // KaTeX 수식 렌더링용 스타일시트
+  stylesheets: [
+    {
+      href: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css',
+      type: 'text/css',
+      integrity:
+        'sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV',
+      crossorigin: 'anonymous',
+    },
+  ],
+
   presets: [
     [
       'classic',
@@ -42,6 +55,8 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: '/', // 지식 베이스를 사이트 루트로 (첫 화면 = 문서)
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
         },
         blog: false, // 블로그(기록) 기능 미사용 — 순수 지식 베이스
         theme: {

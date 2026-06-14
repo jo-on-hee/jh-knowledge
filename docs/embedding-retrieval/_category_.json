@@ -1,0 +1,9 @@
+{
+  "label": "임베딩·검색·RAG",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "title": "임베딩·검색·RAG",
+    "description": "텍스트 임베딩·유사도·검색을 활용한 중복 탐지, 캐싱, RAG 청킹 연구."
+  }
+}
