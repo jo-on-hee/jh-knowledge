@@ -1,10 +1,10 @@
 ---
 slug: 13-auth-credentials-cost
 sidebar_position: 13
-title: "인증·크레덴셜·비용 — 여러 모델을 다루는 뒤편"
+title: "인증·크레덴셜·비용: 여러 모델을 다루는 뒤편"
 ---
 
-이 글에서 다루는 내용: [#2](./02-agent-loop)에서 "주 모델이 실패하면 fallback으로 갈아탄다"고 했고, [#5](./05-memory-and-sessions)에서 sessions 테이블에 `input_tokens`·`actual_cost_usd` 같은 비용 컬럼이 있다고 봤다. 그 뒤편에는 여러 크레덴셜을 돌려쓰고, OAuth 토큰을 갱신하고, 토큰당 비용을 계산하는 시스템이 있다. 에이전트가 여러 모델·여러 계정을 다룰 때 필요한 부분이다.
+[#2](./02-agent-loop)에서는 주 모델이 실패하면 fallback으로 갈아탄다고 했고, [#5](./05-memory-and-sessions)에서는 sessions 테이블의 비용 컬럼을 봤다. 이번 편은 그 뒤편이다. 여러 크레덴셜을 돌려쓰고, OAuth 토큰을 갱신하고, 토큰당 비용을 계산하는 시스템을 본다. 여러 모델·여러 계정을 다루는 에이전트라면 결국 필요한 부분이다.
 
 ---
 
@@ -23,7 +23,7 @@ flowchart TD
 
 ---
 
-## ① 크레덴셜 풀 — 같은 프로바이더의 여러 키
+## ① 크레덴셜 풀: 같은 프로바이더의 여러 키
 
 [#2](./02-agent-loop)의 fallback은 "다른 프로바이더로" 갈아타는 것이었다. 그런데 그 전에, 같은 프로바이더에 키가 여러 개라면 그것부터 돌려쓰는 게 낫다. 예를 들어 OpenAI 키가 3개 있는데 하나가 429(rate limit)에 걸리면, 다른 OpenAI 키로 먼저 시도하는 것이다.
 
@@ -54,7 +54,7 @@ flowchart TD
 
 ---
 
-## ② OAuth 토큰 갱신 — 만료되는 인증
+## ② OAuth 토큰 갱신: 만료되는 인증
 
 API 키는 보통 만료가 없지만, OAuth 기반 인증(Google/Gemini, Anthropic 구독, OpenAI Codex 등)은 access token이 짧은 수명을 갖는다. [#2](./02-agent-loop)에서 "401/403이면 갈아타기 전에 credential 갱신부터 시도한다"고 한 게 이 부분이다.
 
@@ -79,7 +79,7 @@ flowchart LR
 
 ---
 
-## ③ 사용량과 비용 — 토큰을 돈으로 환산
+## ③ 사용량과 비용: 토큰을 돈으로 환산
 
 [#5](./05-memory-and-sessions)에서 sessions 테이블에 `input_tokens`, `output_tokens`, `cache_read_tokens`, `actual_cost_usd`, `estimated_cost_usd` 컬럼이 있었다. 이 값을 채우는 게 `agent/usage_pricing.py`다.
 
@@ -117,11 +117,34 @@ flowchart TD
 
 ---
 
+## 다른 길: 키를 모으는 대신 Nous Portal에 위임
+
+지금까지의 세 가지(크레덴셜 풀·OAuth 갱신·비용 추적)는 모두 "내가 키를 직접 갖고 관리한다"를 전제로 했다. 그런데 Hermes는 모델뿐 아니라 웹 검색, 이미지 생성, TTS, 클라우드 브라우저까지 각각 별도 API 키를 요구한다. 다섯 개의 계정을 만들어야 할 수도 있다. 키를 직접 관리하는 대신 한 곳에 위임하는 선택지가 Nous Portal이다.
+
+```bash
+hermes setup --portal
+```
+
+이 한 명령이 OAuth 로그인을 하고, Nous를 프로바이더로 설정하고, Tool Gateway를 켠다. Tool Gateway가 핵심인데, 이건 도구 호출을 Nous가 호스팅하는 벤더 패스스루로 라우팅하는 장치다. 코드(`tools/managed_tool_gateway.py`)는 이를 "Nous-hosted vendor passthroughs"라 부른다. 즉 사용자의 도구 호출이 Nous를 거쳐 실제 벤더로 전달된다.
+
+| 도구 | 뒤에서 도는 벤더 |
+| --- | --- |
+| 웹 검색 | Firecrawl |
+| 이미지 생성 | FAL |
+| TTS | OpenAI |
+| 클라우드 브라우저 | Browser Use |
+
+작동 방식은 이 편 ②에서 본 OAuth 토큰 메커니즘과 같다. Portal 로그인이 `auth.json`에 Nous 액세스 토큰을 저장하고, 도구가 호출될 때 `build_vendor_gateway_url`로 해당 벤더의 게이트웨이 URL을 만들어 그 토큰으로 인증한다. 토큰 만료가 임박하면(`_access_token_is_expiring`) 자동 갱신한다.
+
+중요한 점은 이게 전부-아니면-전무가 아니라는 것이다. 게이트웨이는 도구(백엔드)별이라, 이미지 생성만 Portal로 쓰고 웹 검색은 직접 키를 쓰는 식의 혼합이 가능하다. `hermes portal info`로 무엇이 연결됐는지 확인한다. 즉 ①의 크레덴셜 풀(여러 키 직접 관리)과 Portal(키를 Nous에 위임)은 양자택일이 아니라, 도구별로 섞어 쓸 수 있는 두 전략이다.
+
+---
+
 ## 에이전트를 직접 만든다면
 
 - 실패 대응을 계층화하라. 같은 프로바이더의 다른 키 → 다른 프로바이더 순으로. 모든 실패를 곧장 "다른 모델로"로 처리하면 멀쩡한 키를 낭비한다.
 - 소진된 키는 버리지 말고 쿨다운을 줘라. rate limit은 일시적이다. 영구 차단하면 가용 자원이 계속 줄어든다.
-- OAuth는 만료 임박 시 미리 갱신하라. 만료된 순간 실패로 알게 되는 것보다, skew를 두고 선제 갱신하는 게 안정적이다. 갱신은 락으로 직렬화한다.
+- OAuth는 만료 임박 시 미리 갱신하라. 만료된 순간 실패로 알게 되는 것보다. skew를 두고 선제 갱신하는 게 안정적이다. 갱신은 락으로 직렬화한다.
 - 비용은 숫자만 저장하지 말고 신뢰도(status)와 출처(source)를 함께 저장하라. 추정치와 실제 청구액을 구분하지 못하면 비용 분석이 어긋난다.
 
 ---
@@ -144,6 +167,6 @@ flowchart TD
 
 ## 다음 편 예고
 
-#14 스킬 수명 관리 — 스킬이 스스로 활성/비활성/보관되는 curator 시스템
+#14 스킬 수명 관리, 스킬이 스스로 활성/비활성/보관되는 curator 시스템
 
 관련 코드: `agent/credential_pool.py`, `agent/google_oauth.py`, `agent/usage_pricing.py`, `agent/model_metadata.py`

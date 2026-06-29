@@ -1,10 +1,10 @@
 ---
 slug: 09-cron-automation
 sidebar_position: 9
-title: "Cron & 자동화 — 예약 작업이 새 에이전트를 띄우는 구조"
+title: "Cron & 자동화: 예약 작업이 새 에이전트를 띄우는 구조"
 ---
 
-이 글에서 다루는 내용: "매일 아침 9시에 PR 요약해줘" 같은 예약 작업이 어떻게 동작하는지 정리한다. Hermes의 cron은 단순 셸 cron이 아니라 기록 없는 새 에이전트를 띄워 자연어 작업을 수행하는 시스템이다.
+이번 편에서는 "매일 아침 9시에 PR 요약해줘" 같은 예약 작업이 어떻게 도는지 본다. Hermes의 cron은 단순 셸 cron이 아니다. 새 에이전트 세션을 띄워 자연어 작업을 실행하고, 결과를 다시 사용자에게 돌려주는 시스템이다.
 
 [#8](./08-gateway)에서 "게이트웨이가 60초마다 cron을 tick한다"고 했다. 이번 편은 그 cron을 연다.
 
@@ -215,9 +215,33 @@ flowchart TD
 
 ---
 
+## cron의 짝: webhook: 시간이 아니라 이벤트로 깨우기
+
+cron이 "시간"으로 에이전트를 깨운다면, webhook은 "외부 이벤트"로 깨운다. 둘은 트리거 방식만 다른 짝이다. GitHub 이슈가 올라오거나, Stripe 결제가 들어오거나, CI 빌드가 끝나거나, IoT 센서가 임계값을 넘으면, 그 서비스가 Hermes의 URL로 POST를 보내 에이전트 실행을 트리거한다.
+
+설정은 webhook 플랫폼을 켜고(`hermes gateway setup` 또는 config의 `platforms.webhook.enabled`), 구독을 만든다.
+
+```bash
+hermes webhook subscribe github-issues \
+  --events "issues" \
+  --prompt "새 이슈 #{issue.number}: {issue.title}\n작성자: {issue.user.login}\n\n이 이슈를 분류해줘." \
+  --deliver telegram \
+  --deliver-chat-id "-100123456789"
+```
+
+이 명령이 webhook URL과 HMAC 시크릿을 돌려준다. 사용자는 GitHub 저장소 설정에서 그 URL로 이슈 이벤트를 보내게 등록한다. 핵심 요소들.
+
+- **프롬프트 템플릿**: `{issue.title}`, `{pull_request.user.login}`, `{data.object.amount}`처럼 `{점.표기법}`으로 POST 페이로드의 중첩 필드를 꺼내 프롬프트에 끼운다. 프롬프트를 안 주면 전체 JSON이 그대로 에이전트에 들어간다.
+- **스킬 부착**: `--skills github-code-review`처럼 이벤트 처리에 필요한 스킬을 미리 로드한다(cron의 스킬 부착과 같은 메커니즘).
+- **직접 전달(`--deliver-only`)**: LLM 없이 페이로드를 그대로 메시지로 흘려보낸다. "결제 알림을 텔레그램으로 그대로 포워딩" 같은, 추론이 필요 없는 경우다. cron의 no-agent 모드와 같은 발상, LLM 왕복이 낭비인 경우를 위한 0비용 경로다.
+
+보안은 구독마다 자동 생성되는 HMAC-SHA256 시크릿으로 한다. webhook 어댑터가 들어오는 모든 POST의 서명을 검증하고, 구독은 `~/.hermes/webhook_subscriptions.json`에 저장된다. 어댑터는 이 파일을 요청마다 mtime 기반으로 핫리로드하므로, 게이트웨이 재시작 없이 구독을 추가·제거할 수 있다.
+
+---
+
 ## 위임 vs Cron vs Background: 정리
 
-#7부터 나온 "비동기 실행" 선택지들을 한 번에 비교한다.
+#7부터 나온 "비동기 실행" 선택지들을 한 번에 비교한다. 방금 본 webhook까지 더하면, 에이전트를 "지금 당장 대화로"가 아니라 다른 방식으로 굴리는 길은 네 갈래다.
 
 ```mermaid
 flowchart TD
@@ -260,7 +284,7 @@ flowchart TD
 
 ## 다음 편 예고
 
-#10 컨텍스트 압축 심화 — dual compression + prompt caching
+#10 컨텍스트 압축 심화, dual compression + prompt caching
 
 #5에서 예고한 "두 번째 압축"을 연다. 대화가 너무 길어지면 어떻게 중간을 요약해 줄이는지(50% / 85% 두 단계), 그리고 #3에서 본 prompt caching이 실제로 어떻게 비용을 줄이는지 구체적으로 본다.
 
